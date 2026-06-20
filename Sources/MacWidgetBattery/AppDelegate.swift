@@ -49,13 +49,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        statusItem?.button?.image = NSImage(
-            systemSymbolName: "battery.75",
-            accessibilityDescription: "Battery Widget"
-        )
         let menu = NSMenu()
         menu.delegate = self
         statusItem?.menu = menu
+
+        monitor.$info
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] info in self?.updateStatusIcon(info) }
+            .store(in: &cancellables)
+    }
+
+    private func updateStatusIcon(_ info: BatteryInfo) {
+        guard let button = statusItem?.button else { return }
+        button.image = NSImage(
+            systemSymbolName: info.batteryImageName,
+            accessibilityDescription: info.statusText
+        )
+        button.contentTintColor = nsColor(for: info)
+    }
+
+    private func nsColor(for info: BatteryInfo) -> NSColor {
+        guard info.hasBattery else { return .systemGray }
+        if info.isCharging || info.isPluggedIn { return NSColor(red: 0, green: 0.85, blue: 1, alpha: 1) }
+        switch info.percentage {
+        case 50...: return .systemGreen
+        case 20...: return .systemYellow
+        default:    return .systemRed
+        }
     }
 
     // MARK: - Window helpers

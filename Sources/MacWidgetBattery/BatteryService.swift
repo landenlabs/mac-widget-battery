@@ -18,10 +18,11 @@ struct BatteryInfo {
         guard hasBattery else { return "No Battery" }
         if isCharging  { return "Charging" }
         if isPluggedIn { return "Fully Charged" }
+        let suffix = timeToEmpty > 0 ? " (\(formatMinutes(timeToEmpty)))" : ""
         switch percentage {
-        case 50...: return "Discharging"
-        case 20...: return "Low Battery"
-        default:    return "Critical Battery"
+        case 50...: return "Discharging\(suffix)"
+        case 20...: return "Low Battery\(suffix)"
+        default:    return "Critical Battery\(suffix)"
         }
     }
 
