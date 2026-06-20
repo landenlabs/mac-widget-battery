@@ -95,10 +95,6 @@ struct ContentView: View {
 
     private var btDevicesSection: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text("Bluetooth")
-                .font(.system(size: 10))
-                .foregroundColor(.white.opacity(0.30))
-                .frame(height: 14)
             ForEach(btMonitor.devices) { device in
                 BluetoothDeviceRow(device: device)
             }

@@ -80,9 +80,9 @@ struct WidgetConfig: Codable {
         let mainH:   Double = 38
         let statusH: Double = (showStatusText ? 15 : 0) + (showTimeRemaining ? 15 : 0)
         let graphH:  Double = showHistoryGraph ? graphHeight : 0
-        // BT section: 14pt header + 20pt per row (18pt frame + 2pt spacing)
+        // BT section: 20pt per row (18pt frame + 2pt spacing)
         let btH:     Double = showBluetoothDevices && btDeviceCount > 0
-                              ? 16.0 + Double(btDeviceCount) * 20.0 : 0.0
+                              ? Double(btDeviceCount) * 20.0 : 0.0
         let height = titleH + mainH + statusH + graphH + btH + 24
         return CGSize(width: graphWidth, height: height)
     }
