@@ -9,6 +9,7 @@ struct BatteryInfo {
     var percentage:  Int    = 0
     var isCharging:  Bool   = false
     var isPluggedIn: Bool   = false
+    var isFullyCharged: Bool = false
     var hasBattery:  Bool   = true
     var timeToEmpty: Int    = -1   // minutes; -1 = unknown/calculating
     var timeToFull:  Int    = -1   // minutes; -1 = not charging
@@ -17,7 +18,8 @@ struct BatteryInfo {
     var statusText: String {
         guard hasBattery else { return "No Battery" }
         if isCharging  { return "Charging" }
-        if isPluggedIn { return "Fully Charged" }
+        if isFullyCharged { return "Fully Charged" }
+        if isPluggedIn { return "Plugged In" }
         let suffix = timeToEmpty > 0 ? " (\(formatMinutes(timeToEmpty)))" : ""
         switch percentage {
         case 50...: return "Discharging\(suffix)"
@@ -91,6 +93,7 @@ enum BatteryService {
             info.percentage  = maxCap > 0 ? min(100, cap * 100 / maxCap) : 0
             info.isCharging  = desc[kIOPSIsChargingKey] as? Bool ?? false
             info.isPluggedIn = (desc[kIOPSPowerSourceStateKey] as? String) == kIOPSACPowerValue
+            info.isFullyCharged = desc[kIOPSIsChargedKey] as? Bool ?? false
             info.timeToEmpty = desc[kIOPSTimeToEmptyKey]       as? Int ?? -1
             info.timeToFull  = desc[kIOPSTimeToFullChargeKey]  as? Int ?? -1
             break  // first internal battery is sufficient
