@@ -89,20 +89,8 @@ struct SettingsView: View {
 
     private var launchAtLoginBinding: Binding<Bool> {
         Binding(
-            get: { UserDefaults.standard.bool(forKey: "launchAtLogin") },
-            set: { enabled in
-                UserDefaults.standard.set(enabled, forKey: "launchAtLogin")
-                setLoginItem(enabled: enabled)
-            }
+            get: { LoginItem.isEnabled },
+            set: { enabled in LoginItem.set(enabled: enabled) }
         )
-    }
-
-    private func setLoginItem(enabled: Bool) {
-        let path   = Bundle.main.bundlePath
-        let script = enabled
-            ? "tell application \"System Events\" to make login item at end with properties {path:\"\(path)\", hidden:false}"
-            : "tell application \"System Events\" to delete (every login item whose path is \"\(path)\")"
-        var err: NSDictionary?
-        NSAppleScript(source: script)?.executeAndReturnError(&err)
     }
 }
