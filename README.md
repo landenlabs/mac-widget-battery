@@ -59,7 +59,7 @@ A lightweight, transparent **Battery desktop widget** for macOS. Displays live b
 - **Configurable history window** — choose how many minutes of history the graph spans
 - **Per-display position memory** — widget remembers its position for every monitor layout
 - **Drag to reposition** — move the widget via the status bar menu
-- **Launch at Login** — optional macOS login item via System Events
+- **Launch at Login** — optional macOS login item via `SMAppService`
 
 ---
 
@@ -77,15 +77,12 @@ A lightweight, transparent **Battery desktop widget** for macOS. Displays live b
 ```bash
 git clone https://github.com/landenlabs/mac-widget-battery.git
 cd mac-widget-battery
-swift build -c release
+./build_app.sh
 ```
 
-The built binary is at:
-```
-.build/release/MacWidgetBattery
-```
+This builds a release binary, packages it as `MacWidgetBattery.app`, and installs it to `/Applications`. A proper `.app` bundle is required for **Launch at Login** to work — macOS can only silently relaunch bundled apps at login, not bare executables.
 
-Run it directly or copy it to `/Applications` or any location in your `PATH`.
+To build without installing, run `swift build -c release` directly; the binary will be at `.build/release/MacWidgetBattery`, but it won't support Launch at Login.
 
 ---
 

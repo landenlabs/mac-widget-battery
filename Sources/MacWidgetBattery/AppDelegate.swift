@@ -39,8 +39,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowManager?.setup()
 
         setupStatusItem()
-
-        LoginItem.syncWithStoredPreference()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
