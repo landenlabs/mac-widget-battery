@@ -148,6 +148,7 @@ extension AppDelegate: NSMenuDelegate {
         menu.removeAllItems()
 
         menu.addItem(titleItem("Wid-Battery"))
+        menu.addItem(batteryLevelItem())
         menu.addItem(.separator())
 
         let dragging  = windowManager?.isDragging ?? false
@@ -180,6 +181,15 @@ extension AppDelegate: NSMenuDelegate {
         return it
     }
 
+    /// Non-clickable row showing the current battery level, shown under the widget name.
+    private func batteryLevelItem() -> NSMenuItem {
+        let info = monitor.info
+        let text = info.hasBattery ? "\(info.percentage)% – \(info.statusText)" : info.statusText
+        let it = NSMenuItem(title: text, action: nil, keyEquivalent: "")
+        it.isEnabled = false
+        return it
+    }
+
     /// Bold, non-clickable title shown at the top of the menu.
     private func titleItem(_ title: String) -> NSMenuItem {
         let it = NSMenuItem(title: title, action: nil, keyEquivalent: "")
@@ -192,7 +202,8 @@ extension AppDelegate: NSMenuDelegate {
 
     /// Small, light, non-clickable version label shown at the bottom of the menu.
     private func versionItem() -> NSMenuItem {
-        let text = "v\(appVersion)"
+        let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? appVersion
+        let text = "v\(v)"
         let it = NSMenuItem(title: text, action: nil, keyEquivalent: "")
         it.attributedTitle = NSAttributedString(
             string: text,
