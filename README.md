@@ -1,7 +1,7 @@
 <table border="0">
   <tr>
     <td>
-      <!-- VERSION -->v6.09.04
+      <!-- VERSION -->v6.09.05
       <!-- DATE -->04-Sep-2026<br>
       macOS<br>
       <a href="https://landenlabs.com">Home</a>
